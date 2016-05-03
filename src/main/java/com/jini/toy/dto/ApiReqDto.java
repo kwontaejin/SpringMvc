@@ -11,4 +11,22 @@ public class ApiReqDto {
 	public Map<String, Object> getParams() {
 		return params;
 	}
+	
+	public String getWithDefault(String key, String defaultValue) {
+		if(params == null || params.get(key) == null) {
+			return defaultValue;
+		}
+		
+		return (String)params.get(key);
+	}
+	
+	public Map<String, Object> putParam(String key, String value) {
+		if(params == null) {
+			params = Maps.newHashMap();
+		}
+		
+		params.put(key, value);
+		
+		return params;
+	}
 }
