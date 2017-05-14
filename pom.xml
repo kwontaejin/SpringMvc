@@ -115,10 +115,10 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory>
+							<outputDirectory>${project.build.outputDirectory}/static/docs</outputDirectory> <!-- 생성된 결과물이 여기로 copy됨 -->
 							<resources>
 								<resource>
-									<directory>${project.build.directory}/generated-docs</directory>
+									<directory>${project.build.directory}/generated-docs</directory> <!-- 실제 결과물이 여기에 생성됨. -->
 								</resource>
 							</resources>
 						</configuration>

@@ -300,15 +300,14 @@ A `PATCH` request is used to update a tag
 
 include::{snippets}/tag-update-example/request-fields.adoc[]
 
-==== Example request
+=== 내 장난감 조회
 
-//include::{snippets}/tag-update-example/curl-request.adoc[]
-include::{snippets}/http-request.adoc[]
+==== Response Field
+include::{snippets}\doc-documentation\test1\response-fields.adoc[]
 
-//==== Example response
-
-//include::{snippets}/tag-update-example/http-response.adoc[]
+==== Example Request
+include::{snippets}\doc-documentation\test1\http-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/http-response.adoc[]
+include::{snippets}\doc-documentation\test1\http-response.adoc[]

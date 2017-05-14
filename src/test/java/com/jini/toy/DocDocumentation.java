@@ -2,16 +2,16 @@ package com.jini.toy;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
@@ -40,8 +40,14 @@ public class DocDocumentation {
 
 	@Before
 	public void setUp() {
+		
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-				.apply(documentationConfiguration(this.restDocumentation)).build();
+				.apply(documentationConfiguration(this.restDocumentation))
+//				.alwaysDo(document("{class-name}/{method-name}",
+//						preprocessRequest(prettyPrint()),
+//							preprocessResponse(prettyPrint())
+//							))
+				.build();
 	}
 
 	@Test
@@ -57,7 +63,19 @@ public class DocDocumentation {
 		
 		this.mockMvc.perform(post("/toy/docs").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 								.content(contentStr))
+								.andExpect(status().isOk())
 								.andExpect(jsonPath("$.data.*").exists())
-								.andDo(document("/"));
+								.andDo(document("{class-name}/{method-name}",
+										preprocessRequest(prettyPrint()),
+										preprocessResponse(prettyPrint()),
+										responseFields(
+												fieldWithPath("data.itemId").description("상품ID"),
+												fieldWithPath("data.itemNm").description("상풍명"),
+												fieldWithPath("resCode").description("응답코드"),
+												fieldWithPath("resMessage").description("응답메시지"),
+												fieldWithPath("data.brandNm").description("브랜드명"),
+												fieldWithPath("data.sellPrc").description("판매가격"),
+												fieldWithPath("data.brandId").description("브랜드ID")))
+										);
 	}
 }
